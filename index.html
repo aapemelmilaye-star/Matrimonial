@@ -199,21 +199,34 @@ button { cursor: pointer; }
   border-radius: var(--radius);
   overflow: hidden;
   box-shadow: 0 10px 26px rgba(89, 29, 16, 0.08);
+  display: flex;
+  flex-direction: column;
 }
 .photo {
   height: 230px;
+  flex: 0 0 230px;
+  max-height: 230px;
   background: linear-gradient(135deg, #fff1d7, #f7d0a1);
   display: grid;
   place-items: center;
   color: var(--maroon);
   font-size: 44px;
   position: relative;
+  overflow: hidden;
 }
-.photo img { width: 100%; height: 100%; object-fit: cover; }
+.photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
 .community-tag {
   position: absolute;
   top: 12px;
   left: 12px;
+  z-index: 2;
   background: rgba(78,14,14,0.9);
   color: white;
   border-radius: 999px;
@@ -280,7 +293,54 @@ button { cursor: pointer; }
 .detail-item { border: 1px solid var(--line); border-radius: 8px; padding: 10px; background: white; }
 .detail-label { color: var(--muted); font-size: 13px; font-weight: 700; }
 .detail-value { color: var(--ink); font-weight: 600; }
+.contact-admin-box {
+  margin-top: 22px;
+  padding: 18px;
+  border: 1px solid #e7bf87;
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, #fff8ec, #fff0d7);
+}
+.contact-admin-box h3 {
+  margin: 0 0 8px;
+  font-family: Cinzel, serif;
+  color: var(--maroon);
+}
+.contact-admin-box p { margin: 0 0 14px; color: var(--muted); }
+.contact-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.contact-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 44px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 700;
+  color: white;
+}
+.contact-action.call { background: var(--maroon); }
+.contact-action.whatsapp { background: #128c3f; }
+.contact-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: inline-grid;
+  place-items: center;
+  background: rgba(255,255,255,0.18);
+  font-size: 15px;
+}
 footer { text-align: center; padding: 30px 20px; color: var(--muted); border-top: 1px solid var(--line); background: var(--ivory); }
+.footer-disclaimer {
+  max-width: 980px;
+  margin: 12px auto 0;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff8ec;
+  color: #6f5340;
+  font-size: 14px;
+  line-height: 1.5;
+}
 @media (max-width: 860px) {
   .hero-inner, .about-grid { grid-template-columns: 1fr; }
   .gate-inner { align-items: flex-start; flex-direction: column; }
@@ -330,7 +390,7 @@ footer { text-align: center; padding: 30px 20px; color: var(--muted); border-top
     </div>
     <div class="hero-card">
       <h2>Member Access Required</h2>
-      <p>Candidate details, photos and contact numbers are visible only after admin-approved login. Boys can view girl profiles and girls can view boy profiles.</p>
+      <p>Candidate profiles and photos are visible only after admin-approved login. For any contact request, members should connect with Mr. T.S. Bedi.</p>
       <button class="btn dark" onclick="openSignup()">Request Login ID</button>
       <button class="btn ghost" onclick="openLogin()">Already Approved</button>
     </div>
@@ -341,13 +401,13 @@ footer { text-align: center; padding: 30px 20px; color: var(--muted); border-top
   <div class="about-grid">
     <div class="panel">
       <h2 class="section-title">Our Work</h2>
-      <p>Aape Mel Milaye helps families share verified matrimonial profiles within the Sindhi, Punjabi and Sikh community. The service is intended to support sincere families, reduce commercial pressure, and make introductions easier through organized profile collection and member-only access.</p>
+      <p>Aape Mel Milaye helps families share matrimonial profiles within the Sindhi, Punjabi and Sikh community. The service is intended to support sincere families, reduce commercial pressure, and make introductions easier through organized profile collection and member-only access.</p>
     </div>
     <div class="panel">
       <h2 class="section-title">How It Works</h2>
       <ul>
         <li>Families submit candidate details and photographs through Google Forms.</li>
-        <li>Submitted profiles are reviewed before publication.</li>
+        <li>Submitted profiles are organized for publication after basic admin review.</li>
         <li>Members request login access and are approved by the admin.</li>
         <li>Approved boys see girls' profiles, and approved girls see boys' profiles.</li>
       </ul>
@@ -406,7 +466,10 @@ footer { text-align: center; padding: 30px 20px; color: var(--muted); border-top
 
 <footer>
   <strong>Aape Mel Milaye</strong><br>
-  A non-profit community matrimonial service. Profile information is shared only with approved members.
+  A non-profit community matrimonial service. Candidate contact details are shared only through Mr. T.S. Bedi.
+  <div class="footer-disclaimer">
+    Disclaimer: The information published on this website is purely based on information provided by candidates and/or their family members. The website owner does not take any responsibility for the veracity, accuracy, completeness, authenticity or reliability of the same.
+  </div>
 </footer>
 
 <div class="modal-overlay" id="loginModal">
@@ -472,6 +535,9 @@ const CONFIG = {
   // Paste your deployed Google Apps Script Web App URL here.
   APPS_SCRIPT_URL: "https://script.google.com/macros/s/AKfycby2n7I_dhLm0drtPbko2VC-Bh6OCgS8HLJuIizP247bbVa5tBDXxatUY83vqhJZuP3-yA/exec",
   ADMIN_EMAIL: "aapemelmilaye@gmail.com",
+  CONTACT_PERSON: "Mr. T.S. Bedi",
+  CONTACT_PHONE_DISPLAY: "+91-9407851953",
+  CONTACT_PHONE_E164: "919407851953",
   // Optional: upload the real logo to the GitHub repo, then set "assets/logo.png" here.
   LOGO_URL: "logo.jpg"
 };
@@ -634,7 +700,7 @@ async function loadProfiles() {
   document.getElementById("statusBox").textContent = "Loading approved profiles...";
   try {
     const data = await api({ action: "profiles", token: session.token });
-    allProfiles = data.profiles || [];
+    allProfiles = (data.profiles || []).map(removeCandidateContactFields);
     filteredProfiles = [...allProfiles];
     buildQualificationFilter();
     document.getElementById("filters").style.display = "grid";
@@ -650,6 +716,12 @@ function showLocked(text) {
   document.getElementById("filters").style.display = "none";
   document.getElementById("statusBox").style.display = "block";
   document.getElementById("statusBox").textContent = text;
+}
+
+function removeCandidateContactFields(profile) {
+  const cleaned = { ...profile };
+  [...COL.phone, ...COL.whatsapp, ...COL.address].forEach(field => delete cleaned[field]);
+  return cleaned;
 }
 
 function buildQualificationFilter() {
@@ -699,7 +771,7 @@ function renderProfiles() {
     const chips = [pick(p, "marital"), pick(p, "diet"), pick(p, "qualCat"), pick(p, "height")].filter(Boolean).slice(0, 4);
     return `<article class="profile-card">
       <div class="photo" data-photo="${escapeHtml(p.__photoId || "")}">
-        <span>AM</span>
+        <span class="photo-placeholder">AM</span>
         <span class="community-tag">${escapeHtml(pick(p, "community") || "Member")}</span>
       </div>
       <div class="profile-body">
@@ -722,7 +794,12 @@ async function loadVisiblePhotos() {
   await Promise.all(photoBoxes.slice(0, 40).map(async el => {
     try {
       const data = await api({ action: "photo", token: session.token, photoId: el.dataset.photo });
-      if (data.dataUrl) el.innerHTML = `<img src="${data.dataUrl}" alt="Candidate photo"><span class="community-tag">${el.querySelector(".community-tag")?.textContent || "Member"}</span>`;
+      if (data.dataUrl && !el.querySelector("img")) {
+        const img = document.createElement("img");
+        img.src = data.dataUrl;
+        img.alt = "Candidate photo";
+        el.prepend(img);
+      }
     } catch (_) {}
   }));
 }
@@ -754,17 +831,29 @@ async function openDetail(index) {
     ["Mother's Name", pick(p, "motherName")],
     ["Mother's Occupation", pick(p, "motherOcc")],
     ["Siblings", pick(p, "siblings")],
-    ["Family Type", pick(p, "familyCat")],
-    ["Phone", pick(p, "phone")],
-    ["WhatsApp", pick(p, "whatsapp")],
-    ["Address", pick(p, "address")]
+    ["Family Type", pick(p, "familyCat")]
   ].filter(([, value]) => value);
+  const contactMessage = encodeURIComponent(`Namaste ${CONFIG.CONTACT_PERSON}, I am interested in the profile of ${pick(p, "name") || "a candidate"} listed on Aape Mel Milaye. Please guide me regarding contact details.`);
   document.getElementById("detailContent").innerHTML = `
     <button class="modal-close" onclick="closeModal('detailModal')">&times;</button>
     <div class="detail-photo">${photoHtml}</div>
     <h2>${escapeHtml(pick(p, "name") || "Profile")}</h2>
     <p>${escapeHtml([pick(p, "community"), pick(p, "caste")].filter(Boolean).join(" | "))}</p>
     <div class="detail-grid">${rows.map(([label, value]) => `<div class="detail-item"><div class="detail-label">${escapeHtml(label)}</div><div class="detail-value">${escapeHtml(value)}</div></div>`).join("")}</div>
+    <div class="contact-admin-box">
+      <h3>For Contact Details</h3>
+      <p>Candidate phone number, WhatsApp number and address are not displayed on the website. Please contact ${escapeHtml(CONFIG.CONTACT_PERSON)} for further guidance.</p>
+      <div class="contact-actions">
+        <a class="contact-action whatsapp" href="https://wa.me/${CONFIG.CONTACT_PHONE_E164}?text=${contactMessage}" target="_blank" rel="noopener">
+          <span class="contact-icon">WA</span>
+          WhatsApp ${escapeHtml(CONFIG.CONTACT_PHONE_DISPLAY)}
+        </a>
+        <a class="contact-action call" href="tel:+${CONFIG.CONTACT_PHONE_E164}">
+          <span class="contact-icon">PH</span>
+          Call ${escapeHtml(CONFIG.CONTACT_PHONE_DISPLAY)}
+        </a>
+      </div>
+    </div>
     ${pick(p, "requirements") ? `<h2 style="margin-top:22px">Partner Requirements</h2><p>${escapeHtml(pick(p, "requirements"))}</p>` : ""}
     ${pick(p, "otherInfo") ? `<h2 style="margin-top:22px">Additional Information</h2><p>${escapeHtml(pick(p, "otherInfo"))}</p>` : ""}
   `;
