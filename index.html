@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aape Mel Milaye | Community Matrimonial Service</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Hind:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --maroon: #7d1717;
+  --maroon-dark: #4e0e0e;
+  --saffron: #e58b21;
+  --gold: #c69a43;
+  --cream: #fff8ec;
+  --ivory: #fffdf7;
+  --rose: #fff0e4;
+  --green: #256c42;
+  --ink: #24160f;
+  --muted: #7f6753;
+  --line: #ead7bd;
+  --shadow: 0 18px 45px rgba(89, 29, 16, 0.13);
+  --radius: 10px;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Hind, Arial, sans-serif;
+  background:
+    radial-gradient(circle at 12% 8%, rgba(229,139,33,0.18), transparent 28%),
+    linear-gradient(180deg, #fff8ec 0%, #fffdf7 38%, #fff5e8 100%);
+  color: var(--ink);
+}
+button, input, select, textarea { font: inherit; }
+button { cursor: pointer; }
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(78,14,14,0.96);
+  border-bottom: 1px solid rgba(255,255,255,0.16);
+  box-shadow: 0 8px 22px rgba(0,0,0,0.18);
+}
+.topbar-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  min-height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 0 20px;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: white;
+  text-decoration: none;
+}
+.logo-wrap {
+  width: 58px;
+  height: 58px;
+  border: 2px solid rgba(255,218,145,0.75);
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff7d8 0%, #f2b84b 54%, #a9281c 100%);
+  display: grid;
+  place-items: center;
+  box-shadow: 0 0 0 5px rgba(229,139,33,0.16);
+  overflow: hidden;
+}
+.logo-wrap img { width: 100%; height: 100%; object-fit: cover; display: none; }
+.logo-fallback {
+  font-family: Cinzel, serif;
+  font-weight: 700;
+  color: var(--maroon);
+  font-size: 22px;
+}
+.brand-title {
+  font-family: Cinzel, serif;
+  display: block;
+  font-size: 22px;
+  line-height: 1.05;
+  letter-spacing: 0;
+}
+.brand-subtitle {
+  display: block;
+  color: rgba(255,244,213,0.78);
+  font-size: 13px;
+}
+.nav-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+.session-pill { display: none; color: #ffe9b5; font-size: 14px; }
+.btn {
+  border: 0;
+  border-radius: 8px;
+  padding: 10px 15px;
+  color: white;
+  background: var(--saffron);
+  font-weight: 700;
+}
+.btn.secondary { background: transparent; border: 1px solid rgba(255,255,255,0.35); }
+.btn.dark { background: var(--maroon); }
+.btn.ghost { background: white; color: var(--maroon); border: 1px solid var(--line); }
+.hero {
+  min-height: 470px;
+  background:
+    linear-gradient(rgba(70,13,13,0.78), rgba(70,13,13,0.62)),
+    repeating-linear-gradient(45deg, rgba(255,255,255,0.05) 0 2px, transparent 2px 16px),
+    linear-gradient(135deg, var(--maroon-dark), var(--maroon) 52%, #b85d1c);
+  color: white;
+  display: grid;
+  align-items: center;
+  padding: 64px 20px 76px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 10px;
+  background: repeating-linear-gradient(90deg, var(--gold) 0 34px, var(--saffron) 34px 68px, #f5d28a 68px 102px);
+}
+.hero-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+  gap: 42px;
+  align-items: center;
+}
+.hero h1 {
+  font-family: Cinzel, serif;
+  font-size: clamp(34px, 6vw, 72px);
+  line-height: 1;
+  margin: 0 0 16px;
+  letter-spacing: 0;
+}
+.hero p { max-width: 690px; margin: 0 0 22px; color: rgba(255,247,229,0.9); font-size: 19px; line-height: 1.55; }
+.hero-card {
+  background: rgba(255,253,247,0.96);
+  color: var(--ink);
+  border-radius: var(--radius);
+  padding: 24px;
+  border: 1px solid rgba(255,255,255,0.5);
+  box-shadow: var(--shadow);
+}
+.hero-card h2 { font-family: Cinzel, serif; margin: 0 0 12px; color: var(--maroon); font-size: 24px; }
+.hero-card p { color: var(--muted); font-size: 16px; margin: 0 0 14px; }
+.badge-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+.badge { border: 1px solid rgba(255,255,255,0.36); background: rgba(255,255,255,0.13); color: white; border-radius: 999px; padding: 7px 14px; font-weight: 600; }
+.section { max-width: 1180px; margin: 0 auto; padding: 42px 20px; }
+.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.panel {
+  background: var(--ivory);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(89, 29, 16, 0.07);
+}
+.section-title {
+  font-family: Cinzel, serif;
+  color: var(--maroon);
+  font-size: 30px;
+  margin: 0 0 12px;
+}
+.panel p, .panel li { color: var(--muted); font-size: 17px; line-height: 1.65; }
+.panel ul { margin: 14px 0 0; padding-left: 20px; }
+.member-gate {
+  background: linear-gradient(135deg, #fffdf7, #fff1dd);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.gate-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 32px 20px;
+  display: flex;
+  gap: 18px;
+  justify-content: space-between;
+  align-items: center;
+}
+.gate-inner h2 { margin: 0; font-family: Cinzel, serif; color: var(--maroon); }
+.gate-inner p { margin: 6px 0 0; color: var(--muted); }
+.filters { display: none; grid-template-columns: 1.4fr repeat(5, 1fr) auto; gap: 10px; margin-bottom: 22px; }
+.filters input, .filters select {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: white;
+}
+.status { padding: 28px; text-align: center; color: var(--muted); background: rgba(255,255,255,0.62); border: 1px dashed var(--line); border-radius: var(--radius); }
+.profiles-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; }
+.profile-card {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 10px 26px rgba(89, 29, 16, 0.08);
+}
+.photo {
+  height: 230px;
+  background: linear-gradient(135deg, #fff1d7, #f7d0a1);
+  display: grid;
+  place-items: center;
+  color: var(--maroon);
+  font-size: 44px;
+  position: relative;
+}
+.photo img { width: 100%; height: 100%; object-fit: cover; }
+.community-tag {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(78,14,14,0.9);
+  color: white;
+  border-radius: 999px;
+  padding: 5px 11px;
+  font-size: 13px;
+  font-weight: 700;
+}
+.profile-body { padding: 18px; }
+.profile-name { font-family: Cinzel, serif; font-size: 21px; color: var(--maroon); margin-bottom: 4px; }
+.profile-meta { color: var(--muted); margin-bottom: 12px; }
+.chip-row { display: flex; flex-wrap: wrap; gap: 7px; min-height: 30px; }
+.chip { background: var(--rose); color: var(--maroon); border: 1px solid #f0c6a5; border-radius: 999px; padding: 4px 9px; font-size: 13px; }
+.profile-footer { display: flex; justify-content: space-between; gap: 12px; align-items: center; margin-top: 16px; }
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(30,12,8,0.68);
+  z-index: 40;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+}
+.modal-overlay.active { display: flex; }
+.modal {
+  width: min(720px, 100%);
+  max-height: 92vh;
+  overflow: auto;
+  background: var(--ivory);
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  padding: 24px;
+}
+.modal.small { width: min(460px, 100%); }
+.modal h2 { font-family: Cinzel, serif; color: var(--maroon); margin: 0 0 8px; }
+.modal p { color: var(--muted); margin: 0 0 16px; }
+.modal-close { float: right; border: 0; background: transparent; font-size: 28px; color: var(--muted); }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.field.full { grid-column: 1 / -1; }
+.field label { display: block; font-weight: 700; color: var(--maroon); margin-bottom: 5px; }
+.field input, .field select, .field textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: white;
+}
+.disclaimer {
+  background: #fff4f4;
+  border: 1px solid #e3aaaa;
+  color: #7d1717;
+  border-radius: 8px;
+  padding: 14px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+.message { margin-top: 12px; padding: 12px; border-radius: 8px; display: none; }
+.message.ok { display: block; background: #e8f5e9; color: var(--green); }
+.message.err { display: block; background: #fff0f0; color: var(--maroon); }
+.detail-photo { height: 310px; background: #f4dcc0; display: grid; place-items: center; font-size: 54px; color: var(--maroon); margin: -24px -24px 20px; }
+.detail-photo img { width: 100%; height: 100%; object-fit: cover; }
+.detail-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.detail-item { border: 1px solid var(--line); border-radius: 8px; padding: 10px; background: white; }
+.detail-label { color: var(--muted); font-size: 13px; font-weight: 700; }
+.detail-value { color: var(--ink); font-weight: 600; }
+footer { text-align: center; padding: 30px 20px; color: var(--muted); border-top: 1px solid var(--line); background: var(--ivory); }
+@media (max-width: 860px) {
+  .hero-inner, .about-grid { grid-template-columns: 1fr; }
+  .gate-inner { align-items: flex-start; flex-direction: column; }
+  .filters { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 560px) {
+  .topbar-inner { align-items: flex-start; flex-direction: column; padding: 14px 16px; }
+  .nav-actions { justify-content: flex-start; }
+  .filters, .form-grid, .detail-grid { grid-template-columns: 1fr; }
+  .field.full { grid-column: auto; }
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="#">
+      <span class="logo-wrap">
+        <img id="siteLogo" src="" alt="Aape Mel Milaye logo">
+        <span class="logo-fallback">AM</span>
+      </span>
+      <span>
+        <span class="brand-title">Aape Mel Milaye</span>
+        <span class="brand-subtitle">Sindhi | Punjabi | Sikh Matrimonial Service</span>
+      </span>
+    </a>
+    <div class="nav-actions">
+      <span class="session-pill" id="sessionPill"></span>
+      <button class="btn secondary" id="signupTopBtn" onclick="openSignup()">Request Member Login</button>
+      <button class="btn" id="loginTopBtn" onclick="openLogin()">Member Login</button>
+      <button class="btn secondary" id="logoutTopBtn" style="display:none" onclick="logout()">Logout</button>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <h1>Aape Mel Milaye</h1>
+      <p>A community-led, non-profit matrimonial initiative helping Sindhi, Punjabi and Sikh families connect with dignity, trust and personal care.</p>
+      <div class="badge-row">
+        <span class="badge">Sindhi Community</span>
+        <span class="badge">Punjabi Community</span>
+        <span class="badge">Sikh Community</span>
+        <span class="badge">No Commercial Fee</span>
+      </div>
+    </div>
+    <div class="hero-card">
+      <h2>Member Access Required</h2>
+      <p>Candidate details, photos and contact numbers are visible only after admin-approved login. Boys can view girl profiles and girls can view boy profiles.</p>
+      <button class="btn dark" onclick="openSignup()">Request Login ID</button>
+      <button class="btn ghost" onclick="openLogin()">Already Approved</button>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="about-grid">
+    <div class="panel">
+      <h2 class="section-title">Our Work</h2>
+      <p>Aape Mel Milaye helps families share verified matrimonial profiles within the Sindhi, Punjabi and Sikh community. The service is intended to support sincere families, reduce commercial pressure, and make introductions easier through organized profile collection and member-only access.</p>
+    </div>
+    <div class="panel">
+      <h2 class="section-title">How It Works</h2>
+      <ul>
+        <li>Families submit candidate details and photographs through Google Forms.</li>
+        <li>Submitted profiles are reviewed before publication.</li>
+        <li>Members request login access and are approved by the admin.</li>
+        <li>Approved boys see girls' profiles, and approved girls see boys' profiles.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="member-gate">
+  <div class="gate-inner">
+    <div>
+      <h2>Profiles Directory</h2>
+      <p id="directorySubtext">Please login with an approved member account to view candidate information.</p>
+    </div>
+    <div>
+      <button class="btn dark" onclick="openLogin()">Login to View Profiles</button>
+      <button class="btn ghost" onclick="openSignup()">New Member Request</button>
+    </div>
+  </div>
+</div>
+
+<main class="section">
+  <div class="filters" id="filters">
+    <input type="text" id="searchName" placeholder="Search by name" oninput="applyFilters()">
+    <select id="filterCommunity" onchange="applyFilters()">
+      <option value="">All Communities</option>
+      <option value="Sindhi">Sindhi</option>
+      <option value="Punjabi">Punjabi</option>
+      <option value="Sikh">Sikh</option>
+    </select>
+    <select id="filterMarital" onchange="applyFilters()">
+      <option value="">Marital Status</option>
+      <option value="Never Married">Never Married</option>
+      <option value="Divorced">Divorced</option>
+      <option value="Widower">Widower</option>
+      <option value="Widow">Widow</option>
+    </select>
+    <select id="filterDiet" onchange="applyFilters()">
+      <option value="">Diet</option>
+      <option value="Vegetarian">Vegetarian</option>
+      <option value="Non-vegetarian">Non-Vegetarian</option>
+      <option value="Eggetarian">Eggetarian</option>
+    </select>
+    <select id="filterNRI" onchange="applyFilters()">
+      <option value="">Location Type</option>
+      <option value="Yes">NRI</option>
+      <option value="No">India-based</option>
+    </select>
+    <select id="filterQualification" onchange="applyFilters()">
+      <option value="">Qualification</option>
+    </select>
+    <button class="btn ghost" onclick="resetFilters()">Reset</button>
+  </div>
+  <div class="status" id="statusBox">No profile data is loaded until an approved member logs in.</div>
+  <div class="profiles-grid" id="profilesGrid"></div>
+</main>
+
+<footer>
+  <strong>Aape Mel Milaye</strong><br>
+  A non-profit community matrimonial service. Profile information is shared only with approved members.
+</footer>
+
+<div class="modal-overlay" id="loginModal">
+  <div class="modal small">
+    <button class="modal-close" onclick="closeModal('loginModal')">&times;</button>
+    <h2>Member Login</h2>
+    <p>Use the login ID and password sent after admin approval.</p>
+    <div class="field"><label>Login ID</label><input id="loginId" autocomplete="username"></div>
+    <div class="field"><label>Password</label><input id="loginPassword" type="password" autocomplete="current-password" onkeydown="if(event.key==='Enter') doLogin()"></div>
+    <button class="btn dark" onclick="doLogin()">Login</button>
+    <div class="message" id="loginMessage"></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="signupModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('signupModal')">&times;</button>
+    <h2>Request Member Login</h2>
+    <p>After submission, the admin receives your request at aapemelmilaye@gmail.com. Access starts only after approval.</p>
+    <div class="form-grid">
+      <div class="field"><label>Name of person requesting access</label><input id="signupName" required></div>
+      <div class="field"><label>Email ID</label><input id="signupEmail" type="email" required></div>
+      <div class="field"><label>Contact number</label><input id="signupPhone" inputmode="tel" required></div>
+      <div class="field"><label>WhatsApp number</label><input id="signupWhatsapp" inputmode="tel" required></div>
+      <div class="field">
+        <label>Candidate gender</label>
+        <select id="signupGender" required>
+          <option value="">Select</option>
+          <option value="Male">Boy / Male candidate</option>
+          <option value="Female">Girl / Female candidate</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Profile created by</label>
+        <select id="signupCreator" onchange="toggleRelation()" required>
+          <option value="">Select</option>
+          <option value="Candidate">Candidate itself</option>
+          <option value="Family Member">Family member</option>
+        </select>
+      </div>
+      <div class="field full" id="relationField" style="display:none">
+        <label>Relationship with candidate</label>
+        <input id="signupRelation" placeholder="Father, mother, brother, sister, uncle, etc.">
+      </div>
+      <div class="field full disclaimer">
+        I confirm that all information submitted by me is accurate and true. If Aape Mel Milaye finds any information false, misleading, incomplete or misused, I understand that my access may be permanently debarred without notice.
+      </div>
+      <div class="field full">
+        <label><input type="checkbox" id="signupAgree"> I accept the above disclaimer.</label>
+      </div>
+    </div>
+    <button class="btn dark" onclick="submitSignup()">Submit Login Request</button>
+    <div class="message" id="signupMessage"></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="detailModal">
+  <div class="modal" id="detailContent"></div>
+</div>
+
+<script>
+const CONFIG = {
+  // Paste your deployed Google Apps Script Web App URL here.
+  APPS_SCRIPT_URL: "https://script.google.com/macros/s/AKfycby2n7I_dhLm0drtPbko2VC-Bh6OCgS8HLJuIizP247bbVa5tBDXxatUY83vqhJZuP3-yA/exec",
+  ADMIN_EMAIL: "aapemelmilaye@gmail.com",
+  // Optional: upload the real logo to the GitHub repo, then set "assets/logo.png" here.
+  LOGO_URL: "logo.jpg"
+};
+
+const COL = {
+  name: ["Name of the candidate", "Name", "Candidate Name"],
+  dob: ["Date of Birth", "DOB"],
+  gender: ["Gender", "Candidate Gender", "Boy/Girl"],
+  height: ["Height"],
+  community: ["Category", "Community"],
+  caste: ["Caste"],
+  gotra: ["Gotra"],
+  marital: ["Marital Status"],
+  qualification: ["Qualification"],
+  qualCat: ["Qualification category for publication", "Qualification Category"],
+  occupation: ["Occupation ", "Occupation"],
+  income: ["Annual salary / income of the candidate (in figures)", "Annual Income"],
+  placeWork: ["Place of work", "Place of Work"],
+  diet: ["Diet ", "Diet"],
+  nri: ["NRI"],
+  horoscope: ["Horoscope"],
+  photo: ["Photograph of the candidate", "Photo", "Photograph"],
+  phone: ["Phone (Contact)", "Contact Number", "Phone"],
+  whatsapp: ["Phone (WhatsApp)", "WhatsApp", "Whatsapp Number"],
+  address: ["Full Address", "Address"],
+  fatherName: ["Father's Name"],
+  fatherOcc: ["Father's Occupation"],
+  motherName: ["Mother's Name"],
+  motherOcc: ["Mother's Occupation"],
+  siblings: ["Details of siblings", "Siblings"],
+  familyCat: ["Family category", "Family Category"],
+  requirements: ["Please specify your requirements for prospective match", "Partner Requirements"],
+  otherInfo: ["Any other information of the candidate", "Other Information"],
+  approved: ["Approved"]
+};
+
+let session = JSON.parse(localStorage.getItem("ammSession") || "null");
+let allProfiles = [];
+let filteredProfiles = [];
+
+function pick(profile, key) {
+  const names = COL[key] || [key];
+  for (const name of names) {
+    if (profile[name] !== undefined && profile[name] !== "") return profile[name];
+  }
+  return "";
+}
+
+function setLogo() {
+  if (!CONFIG.LOGO_URL) return;
+  const img = document.getElementById("siteLogo");
+  img.src = CONFIG.LOGO_URL;
+  img.onload = () => {
+    img.style.display = "block";
+    document.querySelector(".logo-fallback").style.display = "none";
+  };
+}
+
+function openLogin() { document.getElementById("loginModal").classList.add("active"); }
+function openSignup() { document.getElementById("signupModal").classList.add("active"); }
+function closeModal(id) { document.getElementById(id).classList.remove("active"); }
+function toggleRelation() {
+  document.getElementById("relationField").style.display =
+    document.getElementById("signupCreator").value === "Family Member" ? "block" : "none";
+}
+
+function showMessage(id, text, ok) {
+  const el = document.getElementById(id);
+  el.className = "message " + (ok ? "ok" : "err");
+  el.textContent = text;
+}
+
+async function api(payload) {
+  if (!CONFIG.APPS_SCRIPT_URL) {
+    throw new Error("Please set CONFIG.APPS_SCRIPT_URL after deploying the Google Apps Script.");
+  }
+  const res = await fetch(CONFIG.APPS_SCRIPT_URL, {
+    method: "POST",
+    body: JSON.stringify(payload)
+  });
+  const data = await res.json();
+  if (!data.ok) throw new Error(data.message || "Request failed.");
+  return data;
+}
+
+async function submitSignup() {
+  const payload = {
+    action: "signup",
+    name: document.getElementById("signupName").value.trim(),
+    email: document.getElementById("signupEmail").value.trim(),
+    phone: document.getElementById("signupPhone").value.trim(),
+    whatsapp: document.getElementById("signupWhatsapp").value.trim(),
+    gender: document.getElementById("signupGender").value,
+    createdBy: document.getElementById("signupCreator").value,
+    relation: document.getElementById("signupRelation").value.trim(),
+    disclaimerAccepted: document.getElementById("signupAgree").checked
+  };
+  if (!payload.name || !payload.email || !payload.phone || !payload.whatsapp || !payload.gender || !payload.createdBy) {
+    showMessage("signupMessage", "Please fill all required fields.", false);
+    return;
+  }
+  if (payload.createdBy === "Family Member" && !payload.relation) {
+    showMessage("signupMessage", "Please enter the family member relationship.", false);
+    return;
+  }
+  if (!payload.disclaimerAccepted) {
+    showMessage("signupMessage", "Please accept the strict disclaimer before submitting.", false);
+    return;
+  }
+  try {
+    await api(payload);
+    showMessage("signupMessage", "Request submitted. Admin will approve before login access is enabled.", true);
+  } catch (err) {
+    showMessage("signupMessage", err.message, false);
+  }
+}
+
+async function doLogin() {
+  try {
+    const data = await api({
+      action: "login",
+      loginId: document.getElementById("loginId").value.trim(),
+      password: document.getElementById("loginPassword").value
+    });
+    session = data.session;
+    localStorage.setItem("ammSession", JSON.stringify(session));
+    closeModal("loginModal");
+    await loadProfiles();
+  } catch (err) {
+    showMessage("loginMessage", err.message, false);
+  }
+}
+
+function logout() {
+  session = null;
+  allProfiles = [];
+  filteredProfiles = [];
+  localStorage.removeItem("ammSession");
+  document.getElementById("profilesGrid").innerHTML = "";
+  document.getElementById("statusBox").style.display = "block";
+  document.getElementById("statusBox").textContent = "No profile data is loaded until an approved member logs in.";
+  document.getElementById("filters").style.display = "none";
+  refreshSessionUi();
+}
+
+function refreshSessionUi() {
+  const logged = !!session && !!session.token;
+  document.getElementById("loginTopBtn").style.display = logged ? "none" : "inline-block";
+  document.getElementById("signupTopBtn").style.display = logged ? "none" : "inline-block";
+  document.getElementById("logoutTopBtn").style.display = logged ? "inline-block" : "none";
+  const pill = document.getElementById("sessionPill");
+  pill.style.display = logged ? "inline" : "none";
+  pill.textContent = logged ? `Logged in: ${session.name}` : "";
+}
+
+async function loadProfiles() {
+  refreshSessionUi();
+  if (!session || !session.token) return;
+  document.getElementById("statusBox").style.display = "block";
+  document.getElementById("statusBox").textContent = "Loading approved profiles...";
+  try {
+    const data = await api({ action: "profiles", token: session.token });
+    allProfiles = data.profiles || [];
+    filteredProfiles = [...allProfiles];
+    buildQualificationFilter();
+    document.getElementById("filters").style.display = "grid";
+    document.getElementById("directorySubtext").textContent = `${allProfiles.length} approved profiles available for your member category.`;
+    applyFilters();
+  } catch (err) {
+    showLocked(err.message);
+  }
+}
+
+function showLocked(text) {
+  document.getElementById("profilesGrid").innerHTML = "";
+  document.getElementById("filters").style.display = "none";
+  document.getElementById("statusBox").style.display = "block";
+  document.getElementById("statusBox").textContent = text;
+}
+
+function buildQualificationFilter() {
+  const select = document.getElementById("filterQualification");
+  const values = [...new Set(allProfiles.map(p => pick(p, "qualCat")).filter(Boolean))].sort();
+  select.innerHTML = '<option value="">Qualification</option>' + values.map(v => `<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`).join("");
+}
+
+function applyFilters() {
+  const name = document.getElementById("searchName").value.toLowerCase();
+  const community = document.getElementById("filterCommunity").value;
+  const marital = document.getElementById("filterMarital").value;
+  const diet = document.getElementById("filterDiet").value;
+  const nri = document.getElementById("filterNRI").value;
+  const qual = document.getElementById("filterQualification").value;
+  filteredProfiles = allProfiles.filter(p => {
+    if (name && !pick(p, "name").toLowerCase().includes(name)) return false;
+    if (community && pick(p, "community") !== community) return false;
+    if (marital && pick(p, "marital") !== marital) return false;
+    if (diet && pick(p, "diet") !== diet) return false;
+    if (nri && pick(p, "nri") !== nri) return false;
+    if (qual && pick(p, "qualCat") !== qual) return false;
+    return true;
+  });
+  renderProfiles();
+}
+
+function resetFilters() {
+  ["searchName", "filterCommunity", "filterMarital", "filterDiet", "filterNRI", "filterQualification"].forEach(id => document.getElementById(id).value = "");
+  filteredProfiles = [...allProfiles];
+  renderProfiles();
+}
+
+function calcAge(dob) {
+  if (!dob) return "";
+  const d = new Date(dob);
+  if (Number.isNaN(d.getTime())) return "";
+  const age = Math.floor((Date.now() - d.getTime()) / (365.25 * 24 * 60 * 60 * 1000));
+  return age > 0 && age < 100 ? `${age} yrs` : "";
+}
+
+function renderProfiles() {
+  const grid = document.getElementById("profilesGrid");
+  document.getElementById("statusBox").style.display = filteredProfiles.length ? "none" : "block";
+  document.getElementById("statusBox").textContent = filteredProfiles.length ? "" : "No profiles found for the selected filters.";
+  grid.innerHTML = filteredProfiles.map((p, index) => {
+    const chips = [pick(p, "marital"), pick(p, "diet"), pick(p, "qualCat"), pick(p, "height")].filter(Boolean).slice(0, 4);
+    return `<article class="profile-card">
+      <div class="photo" data-photo="${escapeHtml(p.__photoId || "")}">
+        <span>AM</span>
+        <span class="community-tag">${escapeHtml(pick(p, "community") || "Member")}</span>
+      </div>
+      <div class="profile-body">
+        <div class="profile-name">${escapeHtml(pick(p, "name") || "Name not provided")}</div>
+        <div class="profile-meta">${escapeHtml([calcAge(pick(p, "dob")), pick(p, "placeWork")].filter(Boolean).join(" | ") || "Details available")}</div>
+        <div class="chip-row">${chips.map(c => `<span class="chip">${escapeHtml(c)}</span>`).join("")}</div>
+        <div class="profile-footer">
+          <span>${escapeHtml(pick(p, "occupation") || "")}</span>
+          <button class="btn dark" onclick="openDetail(${index})">View Profile</button>
+        </div>
+      </div>
+    </article>`;
+  }).join("");
+  loadVisiblePhotos();
+}
+
+async function loadVisiblePhotos() {
+  if (!session || !session.token) return;
+  const photoBoxes = [...document.querySelectorAll(".photo[data-photo]")].filter(el => el.dataset.photo);
+  await Promise.all(photoBoxes.slice(0, 40).map(async el => {
+    try {
+      const data = await api({ action: "photo", token: session.token, photoId: el.dataset.photo });
+      if (data.dataUrl) el.innerHTML = `<img src="${data.dataUrl}" alt="Candidate photo"><span class="community-tag">${el.querySelector(".community-tag")?.textContent || "Member"}</span>`;
+    } catch (_) {}
+  }));
+}
+
+async function openDetail(index) {
+  const p = filteredProfiles[index];
+  const photoId = p.__photoId || "";
+  let photoHtml = "<span>AM</span>";
+  if (photoId) {
+    try {
+      const data = await api({ action: "photo", token: session.token, photoId });
+      if (data.dataUrl) photoHtml = `<img src="${data.dataUrl}" alt="Candidate photo">`;
+    } catch (_) {}
+  }
+  const rows = [
+    ["Age", calcAge(pick(p, "dob"))],
+    ["Height", pick(p, "height")],
+    ["Community", pick(p, "community")],
+    ["Caste", pick(p, "caste")],
+    ["Gotra", pick(p, "gotra")],
+    ["Marital Status", pick(p, "marital")],
+    ["Diet", pick(p, "diet")],
+    ["Qualification", pick(p, "qualification") || pick(p, "qualCat")],
+    ["Occupation", pick(p, "occupation")],
+    ["Place of Work", pick(p, "placeWork")],
+    ["Annual Income", pick(p, "income")],
+    ["Father's Name", pick(p, "fatherName")],
+    ["Father's Occupation", pick(p, "fatherOcc")],
+    ["Mother's Name", pick(p, "motherName")],
+    ["Mother's Occupation", pick(p, "motherOcc")],
+    ["Siblings", pick(p, "siblings")],
+    ["Family Type", pick(p, "familyCat")],
+    ["Phone", pick(p, "phone")],
+    ["WhatsApp", pick(p, "whatsapp")],
+    ["Address", pick(p, "address")]
+  ].filter(([, value]) => value);
+  document.getElementById("detailContent").innerHTML = `
+    <button class="modal-close" onclick="closeModal('detailModal')">&times;</button>
+    <div class="detail-photo">${photoHtml}</div>
+    <h2>${escapeHtml(pick(p, "name") || "Profile")}</h2>
+    <p>${escapeHtml([pick(p, "community"), pick(p, "caste")].filter(Boolean).join(" | "))}</p>
+    <div class="detail-grid">${rows.map(([label, value]) => `<div class="detail-item"><div class="detail-label">${escapeHtml(label)}</div><div class="detail-value">${escapeHtml(value)}</div></div>`).join("")}</div>
+    ${pick(p, "requirements") ? `<h2 style="margin-top:22px">Partner Requirements</h2><p>${escapeHtml(pick(p, "requirements"))}</p>` : ""}
+    ${pick(p, "otherInfo") ? `<h2 style="margin-top:22px">Additional Information</h2><p>${escapeHtml(pick(p, "otherInfo"))}</p>` : ""}
+  `;
+  document.getElementById("detailModal").classList.add("active");
+}
+
+function escapeHtml(value) {
+  return String(value ?? "").replace(/[&<>"']/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
+}
+
+document.querySelectorAll(".modal-overlay").forEach(modal => {
+  modal.addEventListener("click", event => {
+    if (event.target === modal) modal.classList.remove("active");
+  });
+});
+
+setLogo();
+refreshSessionUi();
+loadProfiles();
+</script>
+</body>
+</html>
