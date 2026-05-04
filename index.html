@@ -148,6 +148,21 @@ button { cursor: pointer; }
 }
 .hero-card h2 { font-family: Cinzel, serif; margin: 0 0 12px; color: var(--maroon); font-size: 24px; }
 .hero-card p { color: var(--muted); font-size: 16px; margin: 0 0 14px; }
+.home-contact {
+  margin-top: 18px;
+  padding: 16px;
+  border-radius: var(--radius);
+  border: 1px solid #e7bf87;
+  background: linear-gradient(135deg, #fff8ec, #ffe7bd);
+}
+.home-contact strong {
+  display: block;
+  color: var(--maroon);
+  font-family: Cinzel, serif;
+  font-size: 20px;
+  margin-bottom: 4px;
+}
+.home-contact span { display: block; color: var(--muted); margin-bottom: 12px; }
 .badge-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
 .badge { border: 1px solid rgba(255,255,255,0.36); background: rgba(255,255,255,0.13); color: white; border-radius: 999px; padding: 7px 14px; font-weight: 600; }
 .section { max-width: 1180px; margin: 0 auto; padding: 42px 20px; }
@@ -264,7 +279,19 @@ button { cursor: pointer; }
 .modal.small { width: min(460px, 100%); }
 .modal h2 { font-family: Cinzel, serif; color: var(--maroon); margin: 0 0 8px; }
 .modal p { color: var(--muted); margin: 0 0 16px; }
-.modal-close { float: right; border: 0; background: transparent; font-size: 28px; color: var(--muted); }
+.modal-close {
+  position: sticky;
+  top: 0;
+  float: right;
+  z-index: 3;
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: rgba(255,253,247,0.95);
+  font-size: 28px;
+  color: var(--muted);
+}
 .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .field.full { grid-column: 1 / -1; }
 .field label { display: block; font-weight: 700; color: var(--maroon); margin-bottom: 5px; }
@@ -287,8 +314,37 @@ button { cursor: pointer; }
 .message { margin-top: 12px; padding: 12px; border-radius: 8px; display: none; }
 .message.ok { display: block; background: #e8f5e9; color: var(--green); }
 .message.err { display: block; background: #fff0f0; color: var(--maroon); }
-.detail-photo { height: 310px; background: #f4dcc0; display: grid; place-items: center; font-size: 54px; color: var(--maroon); margin: -24px -24px 20px; }
-.detail-photo img { width: 100%; height: 100%; object-fit: cover; }
+.detail-photo {
+  height: min(430px, 56vh);
+  background: #f4dcc0;
+  display: grid;
+  place-items: center;
+  font-size: 54px;
+  color: var(--maroon);
+  margin: -24px -24px 0;
+  overflow: hidden;
+}
+.detail-photo img { width: 100%; height: 100%; object-fit: contain; background: #f4dcc0; }
+.detail-heading {
+  margin: 0 -24px 20px;
+  padding: 18px 24px 20px;
+  background: linear-gradient(135deg, #fffdf7, #fff4e5);
+  border-bottom: 1px solid var(--line);
+}
+.detail-heading h2 {
+  margin: 0 0 4px;
+  font-family: Cinzel, serif;
+  color: #5d1010;
+  font-size: clamp(26px, 4vw, 38px);
+  line-height: 1.12;
+  font-weight: 700;
+}
+.detail-heading p {
+  margin: 0;
+  color: #6f5340;
+  font-size: 18px;
+  font-weight: 600;
+}
 .detail-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
 .detail-item { border: 1px solid var(--line); border-radius: 8px; padding: 10px; background: white; }
 .detail-label { color: var(--muted); font-size: 13px; font-weight: 700; }
@@ -326,8 +382,22 @@ button { cursor: pointer; }
   border-radius: 50%;
   display: inline-grid;
   place-items: center;
-  background: rgba(255,255,255,0.18);
-  font-size: 15px;
+  background: #fffdf7;
+  color: var(--maroon);
+  flex: 0 0 24px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.16);
+}
+.contact-action.whatsapp .contact-icon { color: #128c3f; }
+.contact-action.call .contact-icon { color: var(--maroon); }
+.contact-icon svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 footer { text-align: center; padding: 30px 20px; color: var(--muted); border-top: 1px solid var(--line); background: var(--ivory); }
 .footer-disclaimer {
@@ -391,6 +461,20 @@ footer { text-align: center; padding: 30px 20px; color: var(--muted); border-top
     <div class="hero-card">
       <h2>Member Access Required</h2>
       <p>Candidate profiles and photos are visible only after admin-approved login. For any contact request, members should connect with Mr. T.S. Bedi.</p>
+      <div class="home-contact">
+        <strong>For Queries & Contact Details</strong>
+        <span>Mr. T.S. Bedi | +91-9407851953</span>
+        <div class="contact-actions">
+          <a class="contact-action whatsapp" href="https://wa.me/919407851953?text=Namaste%20Mr.%20T.S.%20Bedi%2C%20I%20have%20a%20query%20regarding%20Aape%20Mel%20Milaye." target="_blank" rel="noopener">
+            <span class="contact-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4.5 19.5 5.8 15A8 8 0 1 1 9 18.2Z"></path><path d="M9.2 8.8c.2-.5.4-.6.8-.6h.6c.2 0 .4.1.5.4l.7 1.6c.1.3.1.5-.1.7l-.4.5c.7 1.2 1.6 2.1 2.9 2.8l.5-.5c.2-.2.5-.2.7-.1l1.6.7c.3.1.4.3.4.6v.5c0 .4-.2.7-.6.9-.8.3-2.2.2-4.1-.8-1.6-.8-2.9-2.1-3.8-3.7-.9-1.7-1-2.9-.7-3.6Z"></path></svg></span>
+            WhatsApp
+          </a>
+          <a class="contact-action call" href="tel:+919407851953">
+            <span class="contact-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.4 19.4 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.7.6 2.5a2 2 0 0 1-.5 2.1L8 9.5a16 16 0 0 0 6.5 6.5l1.2-1.2a2 2 0 0 1 2.1-.5c.8.3 1.6.5 2.5.6a2 2 0 0 1 1.7 2Z"></path></svg></span>
+            Call Now
+          </a>
+        </div>
+      </div>
       <button class="btn dark" onclick="openSignup()">Request Login ID</button>
       <button class="btn ghost" onclick="openLogin()">Already Approved</button>
     </div>
@@ -545,6 +629,8 @@ const CONFIG = {
 const COL = {
   name: ["Name of the candidate", "Name", "Candidate Name"],
   dob: ["Date of Birth", "DOB"],
+  birthTime: ["Birth Time", "Time of Birth"],
+  birthPlace: ["Place of birth", "Place of Birth", "Birth Place"],
   gender: ["Gender", "Candidate Gender", "Boy/Girl"],
   height: ["Height"],
   community: ["Category", "Community"],
@@ -569,8 +655,8 @@ const COL = {
   motherOcc: ["Mother's Occupation"],
   siblings: ["Details of siblings", "Siblings"],
   familyCat: ["Family category", "Family Category"],
-  requirements: ["Please specify your requirements for prospective match", "Partner Requirements"],
-  otherInfo: ["Any other information of the candidate", "Other Information"],
+  requirements: ["Please specify your requirements for prospective match", "Partner Requirements", "Spouse Requirement", "Spouse Requirements"],
+  otherInfo: ["Any other information of the candidate", "Other Information", "Any other information"],
   approved: ["Approved"]
 };
 
@@ -763,6 +849,13 @@ function calcAge(dob) {
   return age > 0 && age < 100 ? `${age} yrs` : "";
 }
 
+function formatDate(value) {
+  if (!value) return "";
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return value;
+  return d.toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" });
+}
+
 function renderProfiles() {
   const grid = document.getElementById("profilesGrid");
   document.getElementById("statusBox").style.display = filteredProfiles.length ? "none" : "block";
@@ -816,6 +909,9 @@ async function openDetail(index) {
   }
   const rows = [
     ["Age", calcAge(pick(p, "dob"))],
+    ["Date of Birth", formatDate(pick(p, "dob"))],
+    ["Birth Time", pick(p, "birthTime")],
+    ["Place of Birth", pick(p, "birthPlace")],
     ["Height", pick(p, "height")],
     ["Community", pick(p, "community")],
     ["Caste", pick(p, "caste")],
@@ -837,24 +933,26 @@ async function openDetail(index) {
   document.getElementById("detailContent").innerHTML = `
     <button class="modal-close" onclick="closeModal('detailModal')">&times;</button>
     <div class="detail-photo">${photoHtml}</div>
-    <h2>${escapeHtml(pick(p, "name") || "Profile")}</h2>
-    <p>${escapeHtml([pick(p, "community"), pick(p, "caste")].filter(Boolean).join(" | "))}</p>
+    <div class="detail-heading">
+      <h2>${escapeHtml(pick(p, "name") || "Profile")}</h2>
+      <p>${escapeHtml([pick(p, "community"), pick(p, "caste")].filter(Boolean).join(" | "))}</p>
+    </div>
     <div class="detail-grid">${rows.map(([label, value]) => `<div class="detail-item"><div class="detail-label">${escapeHtml(label)}</div><div class="detail-value">${escapeHtml(value)}</div></div>`).join("")}</div>
     <div class="contact-admin-box">
       <h3>For Contact Details</h3>
       <p>Candidate phone number, WhatsApp number and address are not displayed on the website. Please contact ${escapeHtml(CONFIG.CONTACT_PERSON)} for further guidance.</p>
       <div class="contact-actions">
         <a class="contact-action whatsapp" href="https://wa.me/${CONFIG.CONTACT_PHONE_E164}?text=${contactMessage}" target="_blank" rel="noopener">
-          <span class="contact-icon">WA</span>
+          <span class="contact-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4.5 19.5 5.8 15A8 8 0 1 1 9 18.2Z"></path><path d="M9.2 8.8c.2-.5.4-.6.8-.6h.6c.2 0 .4.1.5.4l.7 1.6c.1.3.1.5-.1.7l-.4.5c.7 1.2 1.6 2.1 2.9 2.8l.5-.5c.2-.2.5-.2.7-.1l1.6.7c.3.1.4.3.4.6v.5c0 .4-.2.7-.6.9-.8.3-2.2.2-4.1-.8-1.6-.8-2.9-2.1-3.8-3.7-.9-1.7-1-2.9-.7-3.6Z"></path></svg></span>
           WhatsApp ${escapeHtml(CONFIG.CONTACT_PHONE_DISPLAY)}
         </a>
         <a class="contact-action call" href="tel:+${CONFIG.CONTACT_PHONE_E164}">
-          <span class="contact-icon">PH</span>
+          <span class="contact-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.4 19.4 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.7.6 2.5a2 2 0 0 1-.5 2.1L8 9.5a16 16 0 0 0 6.5 6.5l1.2-1.2a2 2 0 0 1 2.1-.5c.8.3 1.6.5 2.5.6a2 2 0 0 1 1.7 2Z"></path></svg></span>
           Call ${escapeHtml(CONFIG.CONTACT_PHONE_DISPLAY)}
         </a>
       </div>
     </div>
-    ${pick(p, "requirements") ? `<h2 style="margin-top:22px">Partner Requirements</h2><p>${escapeHtml(pick(p, "requirements"))}</p>` : ""}
+    ${pick(p, "requirements") ? `<h2 style="margin-top:22px">Spouse Requirement</h2><p>${escapeHtml(pick(p, "requirements"))}</p>` : ""}
     ${pick(p, "otherInfo") ? `<h2 style="margin-top:22px">Additional Information</h2><p>${escapeHtml(pick(p, "otherInfo"))}</p>` : ""}
   `;
   document.getElementById("detailModal").classList.add("active");
