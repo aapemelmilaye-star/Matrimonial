@@ -439,7 +439,7 @@ footer { text-align: center; padding: 30px 20px; color: var(--muted); border-top
     </a>
     <div class="nav-actions">
       <span class="session-pill" id="sessionPill"></span>
-      <button class="btn secondary" id="signupTopBtn" onclick="openSignup()">Request Member Login</button>
+      <button class="btn secondary" id="formTopBtn" onclick="openProfileForm()">Submit Profile</button>
       <button class="btn" id="loginTopBtn" onclick="openLogin()">Member Login</button>
       <button class="btn secondary" id="logoutTopBtn" style="display:none" onclick="logout()">Logout</button>
     </div>
@@ -459,8 +459,8 @@ footer { text-align: center; padding: 30px 20px; color: var(--muted); border-top
       </div>
     </div>
     <div class="hero-card">
-      <h2>Member Access Required</h2>
-      <p>Candidate profiles and photos are visible only after admin-approved login. For any contact request, members should connect with Mr. T.S. Bedi.</p>
+      <h2>Register Through One Form</h2>
+      <p>Submit your profile and login-request details in one Google Form. After admin approval, login details are sent by email and approved members can view profiles.</p>
       <div class="home-contact">
         <strong>For Queries & Contact Details</strong>
         <span>Mr. T.S. Bedi | +91-9407851953</span>
@@ -475,7 +475,7 @@ footer { text-align: center; padding: 30px 20px; color: var(--muted); border-top
           </a>
         </div>
       </div>
-      <button class="btn dark" onclick="openSignup()">Request Login ID</button>
+      <button class="btn dark" onclick="openProfileForm()">Submit Profile</button>
       <button class="btn ghost" onclick="openLogin()">Already Approved</button>
     </div>
   </div>
@@ -490,8 +490,8 @@ footer { text-align: center; padding: 30px 20px; color: var(--muted); border-top
     <div class="panel">
       <h2 class="section-title">How It Works</h2>
       <ul>
-        <li>Families submit candidate details and photographs through Google Forms.</li>
-        <li>Submitted profiles are organized for publication after basic admin review.</li>
+        <li>Families submit candidate details, photograph and login-request details through one Google Form.</li>
+        <li>After admin approval, the profile is published and login details are emailed automatically.</li>
         <li>Members request login access and are approved by the admin.</li>
         <li>Approved boys see girls' profiles, and approved girls see boys' profiles.</li>
       </ul>
@@ -507,7 +507,7 @@ footer { text-align: center; padding: 30px 20px; color: var(--muted); border-top
     </div>
     <div>
       <button class="btn dark" onclick="openLogin()">Login to View Profiles</button>
-      <button class="btn ghost" onclick="openSignup()">New Member Request</button>
+      <button class="btn ghost" onclick="openProfileForm()">Submit Profile</button>
     </div>
   </div>
 </div>
@@ -571,8 +571,8 @@ footer { text-align: center; padding: 30px 20px; color: var(--muted); border-top
 <div class="modal-overlay" id="signupModal">
   <div class="modal">
     <button class="modal-close" onclick="closeModal('signupModal')">&times;</button>
-    <h2>Request Member Login</h2>
-    <p>After submission, the admin receives your request at aapemelmilaye@gmail.com. Access starts only after approval.</p>
+    <h2>Old Login Request Form</h2>
+    <p>This form is no longer used in the normal process. Please use the Submit Profile button and fill the Google Form only once.</p>
     <div class="form-grid">
       <div class="field"><label>Name of person requesting access</label><input id="signupName" required></div>
       <div class="field"><label>Email ID</label><input id="signupEmail" type="email" required></div>
@@ -617,8 +617,9 @@ footer { text-align: center; padding: 30px 20px; color: var(--muted); border-top
 <script>
 const CONFIG = {
   // Paste your deployed Google Apps Script Web App URL here.
-  APPS_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbya4hCb4F_H27ATfngMM0K63nzI-l-EJ96vPVaiMy1emQ4BX6T6O8SCTkKK10rmI3Z2/exec",
+  APPS_SCRIPT_URL: "https://script.google.com/macros/s/AKfycby2n7I_dhLm0drtPbko2VC-Bh6OCgS8HLJuIizP247bbVa5tBDXxatUY83vqhJZuP3-yA/exec",
   ADMIN_EMAIL: "aapemelmilaye@gmail.com",
+  PROFILE_FORM_URL: "https://docs.google.com/forms/d/1R4HGtkplBAM19lCUDQoUtiWDigoGTnF6h_p_O8bPnsM/viewform",
   CONTACT_PERSON: "Mr. T.S. Bedi",
   CONTACT_PHONE_DISPLAY: "+91-9407851953",
   CONTACT_PHONE_E164: "919407851953",
@@ -684,6 +685,7 @@ function setLogo() {
 
 function openLogin() { document.getElementById("loginModal").classList.add("active"); }
 function openSignup() { document.getElementById("signupModal").classList.add("active"); }
+function openProfileForm() { window.open(CONFIG.PROFILE_FORM_URL, "_blank", "noopener"); }
 function closeModal(id) { document.getElementById(id).classList.remove("active"); }
 function toggleRelation() {
   document.getElementById("relationField").style.display =
@@ -772,7 +774,7 @@ function logout() {
 function refreshSessionUi() {
   const logged = !!session && !!session.token;
   document.getElementById("loginTopBtn").style.display = logged ? "none" : "inline-block";
-  document.getElementById("signupTopBtn").style.display = logged ? "none" : "inline-block";
+  document.getElementById("formTopBtn").style.display = logged ? "none" : "inline-block";
   document.getElementById("logoutTopBtn").style.display = logged ? "inline-block" : "none";
   const pill = document.getElementById("sessionPill");
   pill.style.display = logged ? "inline" : "none";
