@@ -565,11 +565,6 @@ footer { text-align: center; padding: 30px 20px; color: var(--muted); border-top
     <div class="field"><label>Password</label><input id="loginPassword" type="password" autocomplete="current-password" onkeydown="if(event.key==='Enter') doLogin()"></div>
     <button class="btn dark" onclick="doLogin()">Login</button>
     <div class="message" id="loginMessage"></div>
-    <p style="margin-top:14px;font-size:14px;color:#7f6753;">
-      Forgot your login details?
-      <a href="#" onclick="openForgotPassword(); return false;"
-         style="color:#7d1717;font-weight:700;">Click here to resend them</a>
-    </p>
   </div>
 </div>
 
@@ -612,26 +607,6 @@ footer { text-align: center; padding: 30px 20px; color: var(--muted); border-top
     </div>
     <button class="btn dark" onclick="submitSignup()">Submit Login Request</button>
     <div class="message" id="signupMessage"></div>
-  </div>
-</div>
-
-<div class="modal-overlay" id="forgotModal">
-  <div class="modal small">
-    <button class="modal-close" onclick="closeModal('forgotModal')">&times;</button>
-    <h2>Resend Login Details</h2>
-    <p>Enter the email address you used when submitting your profile. We will resend your Login ID and Password to that email.</p>
-    <div class="field">
-      <label>Your Email Address</label>
-      <input id="forgotEmail" type="email" placeholder="yourname@example.com"
-             onkeydown="if(event.key==='Enter') submitForgotPassword()">
-    </div>
-    <button class="btn dark" onclick="submitForgotPassword()">Resend My Login Details</button>
-    <div class="message" id="forgotMessage"></div>
-    <p style="margin-top:14px;font-size:13px;color:#7f6753;">
-      Already have your details?
-      <a href="#" onclick="closeModal('forgotModal'); openLogin(); return false;"
-         style="color:#7d1717;font-weight:700;">Go back to Login</a>
-    </p>
   </div>
 </div>
 
@@ -712,13 +687,6 @@ function openLogin() { document.getElementById("loginModal").classList.add("acti
 function openSignup() { document.getElementById("signupModal").classList.add("active"); }
 function openProfileForm() { window.open(CONFIG.PROFILE_FORM_URL, "_blank", "noopener"); }
 function closeModal(id) { document.getElementById(id).classList.remove("active"); }
-function openForgotPassword() {
-  closeModal("loginModal");
-  document.getElementById("forgotEmail").value = "";
-  document.getElementById("forgotMessage").className = "message";
-  document.getElementById("forgotMessage").textContent = "";
-  document.getElementById("forgotModal").classList.add("active");
-}
 function toggleRelation() {
   document.getElementById("relationField").style.display =
     document.getElementById("signupCreator").value === "Family Member" ? "block" : "none";
@@ -772,26 +740,6 @@ async function submitSignup() {
     showMessage("signupMessage", "Request submitted. Admin will approve before login access is enabled.", true);
   } catch (err) {
     showMessage("signupMessage", err.message, false);
-  }
-}
-
-async function submitForgotPassword() {
-  const email = document.getElementById("forgotEmail").value.trim();
-  if (!email) {
-    showMessage("forgotMessage", "Please enter your email address.", false);
-    return;
-  }
-  const btn = document.querySelector("#forgotModal .btn.dark");
-  btn.textContent = "Sending…";
-  btn.disabled = true;
-  try {
-    const data = await api({ action: "forgotPassword", email });
-    showMessage("forgotMessage", data.message, true);
-  } catch (err) {
-    showMessage("forgotMessage", err.message, false);
-  } finally {
-    btn.textContent = "Resend My Login Details";
-    btn.disabled = false;
   }
 }
 
