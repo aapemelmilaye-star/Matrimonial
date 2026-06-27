@@ -636,7 +636,7 @@ footer { text-align: center; padding: 30px 20px; color: var(--muted); border-top
 <script>
 const CONFIG = {
   // Paste your deployed Google Apps Script Web App URL here.
-  APPS_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbwKBOxst2Zzgtb5Hx9zF3alOSjgmVB3SLTtJ4WPs0JqWM3Qa-5W8QqsMoNHe1uKr7u6xA/exec",
+  APPS_SCRIPT_URL: "PASTE_YOUR_NEW_WEB_APP_URL_HERE",
   ADMIN_EMAIL: "aapemelmilaye@gmail.com",
   PROFILE_FORM_URL: "https://docs.google.com/forms/d/1R4HGtkplBAM19lCUDQoUtiWDigoGTnF6h_p_O8bPnsM/viewform",
   CONTACT_PERSON: "Mr. T.S. Bedi",
@@ -904,6 +904,26 @@ function formatDate(value) {
   return d.toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" });
 }
 
+function formatTime(value) {
+  if (!value) return "";
+  const raw = String(value).trim();
+  const timeOnly = raw.match(/^(\d{1,2}):(\d{2})(?::\d{2}(?:\.\d{1,3})?)?\s*(AM|PM)?$/i);
+  if (timeOnly) {
+    let hours = Number(timeOnly[1]);
+    const minutes = timeOnly[2];
+    const suffix = timeOnly[3] ? timeOnly[3].toUpperCase() : "";
+    if (suffix) return `${hours}:${minutes} ${suffix}`;
+    const ampm = hours >= 12 ? "PM" : "AM";
+    hours = hours % 12 || 12;
+    return `${hours}:${minutes} ${ampm}`;
+  }
+  const d = new Date(raw);
+  if (!Number.isNaN(d.getTime())) {
+    return d.toLocaleTimeString("en-IN", { hour: "numeric", minute: "2-digit", hour12: true, timeZone: "UTC" });
+  }
+  return value;
+}
+
 function renderProfiles() {
   const grid = document.getElementById("profilesGrid");
   document.getElementById("statusBox").style.display = filteredProfiles.length ? "none" : "block";
@@ -961,7 +981,7 @@ async function openDetail(index) {
     ["Profile Code", pick(p, "candidateCode")],
     ["Age", calcAge(pick(p, "dob"))],
     ["Date of Birth", formatDate(pick(p, "dob"))],
-    ["Birth Time", pick(p, "birthTime")],
+    ["Birth Time", formatTime(pick(p, "birthTime"))],
     ["Place of Birth", pick(p, "birthPlace")],
     ["Height", pick(p, "height")],
     ["Community", pick(p, "community")],
