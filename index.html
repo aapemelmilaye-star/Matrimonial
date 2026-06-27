@@ -249,6 +249,25 @@ button { cursor: pointer; }
   font-size: 13px;
   font-weight: 700;
 }
+.candidate-code {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  background: rgba(255,255,255,0.94);
+  color: var(--maroon);
+  border: 1px solid rgba(240,198,165,0.95);
+  border-radius: 999px;
+  padding: 5px 11px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+.profile-code-line {
+  color: var(--maroon);
+  font-weight: 800;
+  margin-bottom: 8px;
+}
 .profile-body { padding: 18px; }
 .profile-name { font-family: Cinzel, serif; font-size: 21px; color: var(--maroon); margin-bottom: 4px; }
 .profile-meta { color: var(--muted); margin-bottom: 12px; }
@@ -617,7 +636,7 @@ footer { text-align: center; padding: 30px 20px; color: var(--muted); border-top
 <script>
 const CONFIG = {
   // Paste your deployed Google Apps Script Web App URL here.
-  APPS_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbxlbCFPG4lviceGidgeT9uWq6310SH-zv5Q93yk-WTMIyZCCezUaAjQ5kwN_scDwmz8Bw/exec",
+  APPS_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbwKBOxst2Zzgtb5Hx9zF3alOSjgmVB3SLTtJ4WPs0JqWM3Qa-5W8QqsMoNHe1uKr7u6xA/exec",
   ADMIN_EMAIL: "aapemelmilaye@gmail.com",
   PROFILE_FORM_URL: "https://docs.google.com/forms/d/1R4HGtkplBAM19lCUDQoUtiWDigoGTnF6h_p_O8bPnsM/viewform",
   CONTACT_PERSON: "Mr. T.S. Bedi",
@@ -628,6 +647,7 @@ const CONFIG = {
 };
 
 const COL = {
+  candidateCode: ["Candidate Code", "Profile Code"],
   name: ["Name of the candidate", "Name", "Candidate Name"],
   dob: ["Date of Birth", "DOB"],
   birthTime: ["Birth Time", "Time of Birth"],
@@ -894,8 +914,10 @@ function renderProfiles() {
       <div class="photo" data-photo="${escapeHtml(p.__photoId || "")}">
         <span class="photo-placeholder">AM</span>
         <span class="community-tag">${escapeHtml(pick(p, "community") || "Member")}</span>
+        ${pick(p, "candidateCode") ? `<span class="candidate-code">${escapeHtml(pick(p, "candidateCode"))}</span>` : ""}
       </div>
       <div class="profile-body">
+        ${pick(p, "candidateCode") ? `<div class="profile-code-line">Profile Code: ${escapeHtml(pick(p, "candidateCode"))}</div>` : ""}
         <div class="profile-name">${escapeHtml(pick(p, "name") || "Name not provided")}</div>
         <div class="profile-meta">${escapeHtml([calcAge(pick(p, "dob")), pick(p, "placeWork")].filter(Boolean).join(" | ") || "Details available")}</div>
         <div class="chip-row">${chips.map(c => `<span class="chip">${escapeHtml(c)}</span>`).join("")}</div>
@@ -936,6 +958,7 @@ async function openDetail(index) {
     } catch (_) {}
   }
   const rows = [
+    ["Profile Code", pick(p, "candidateCode")],
     ["Age", calcAge(pick(p, "dob"))],
     ["Date of Birth", formatDate(pick(p, "dob"))],
     ["Birth Time", pick(p, "birthTime")],
@@ -957,11 +980,12 @@ async function openDetail(index) {
     ["Siblings", pick(p, "siblings")],
     ["Family Type", pick(p, "familyCat")]
   ].filter(([, value]) => value);
-  const contactMessage = encodeURIComponent(`Namaste ${CONFIG.CONTACT_PERSON}, I am interested in the profile of ${pick(p, "name") || "a candidate"} listed on Aape Mel Milaye. Please guide me regarding contact details.`);
+  const contactMessage = encodeURIComponent(`Namaste ${CONFIG.CONTACT_PERSON}, I am interested in profile ${pick(p, "candidateCode") || ""} ${pick(p, "name") || "a candidate"} listed on Aape Mel Milaye. Please guide me regarding contact details.`);
   document.getElementById("detailContent").innerHTML = `
     <button class="modal-close" onclick="closeModal('detailModal')">&times;</button>
     <div class="detail-photo">${photoHtml}</div>
     <div class="detail-heading">
+      ${pick(p, "candidateCode") ? `<div class="profile-code-line">Profile Code: ${escapeHtml(pick(p, "candidateCode"))}</div>` : ""}
       <h2>${escapeHtml(pick(p, "name") || "Profile")}</h2>
       <p>${escapeHtml([pick(p, "community"), pick(p, "caste")].filter(Boolean).join(" | "))}</p>
     </div>
