@@ -198,7 +198,7 @@ button { cursor: pointer; }
 }
 .gate-inner h2 { margin: 0; font-family: Cinzel, serif; color: var(--maroon); }
 .gate-inner p { margin: 6px 0 0; color: var(--muted); }
-.filters { display: none; grid-template-columns: 1.4fr repeat(5, 1fr) auto; gap: 10px; margin-bottom: 22px; }
+.filters { display: none; grid-template-columns: repeat(6, minmax(140px, 1fr)); gap: 10px; margin-bottom: 22px; }
 .filters input, .filters select {
   width: 100%;
   border: 1px solid var(--line);
@@ -206,6 +206,9 @@ button { cursor: pointer; }
   padding: 10px 12px;
   background: white;
 }
+.filters .wide { grid-column: span 2; }
+.filters .compact { min-width: 0; }
+.filters .reset-filter { align-self: stretch; }
 .status { padding: 28px; text-align: center; color: var(--muted); background: rgba(255,255,255,0.62); border: 1px dashed var(--line); border-radius: var(--radius); }
 .profiles-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; }
 .profile-card {
@@ -533,35 +536,63 @@ footer { text-align: center; padding: 30px 20px; color: var(--muted); border-top
 
 <main class="section">
   <div class="filters" id="filters">
-    <input type="text" id="searchName" placeholder="Search by name" oninput="applyFilters()">
+    <input class="wide" type="text" id="searchName" placeholder="Name or profile code" oninput="applyFilters()">
     <select id="filterCommunity" onchange="applyFilters()">
       <option value="">All Communities</option>
-      <option value="Sindhi">Sindhi</option>
       <option value="Punjabi">Punjabi</option>
       <option value="Sikh">Sikh</option>
+      <option value="Sindhi">Sindhi</option>
     </select>
+    <input class="compact" type="number" id="filterAgeMin" min="18" max="90" placeholder="Min age" oninput="applyFilters()">
+    <input class="compact" type="number" id="filterAgeMax" min="18" max="90" placeholder="Max age" oninput="applyFilters()">
     <select id="filterMarital" onchange="applyFilters()">
       <option value="">Marital Status</option>
       <option value="Never Married">Never Married</option>
       <option value="Divorced">Divorced</option>
-      <option value="Widower">Widower</option>
-      <option value="Widow">Widow</option>
+      <option value="Widow / Widower">Widow / Widower</option>
     </select>
+    <input class="compact" type="number" id="filterHeightMin" min="48" max="84" placeholder="Min height" oninput="applyFilters()">
+    <input class="compact" type="number" id="filterHeightMax" min="48" max="84" placeholder="Max height" oninput="applyFilters()">
     <select id="filterDiet" onchange="applyFilters()">
       <option value="">Diet</option>
       <option value="Vegetarian">Vegetarian</option>
-      <option value="Non-vegetarian">Non-Vegetarian</option>
+      <option value="Vegan">Vegan</option>
+      <option value="Non-vegetarian">Non-vegetarian</option>
       <option value="Eggetarian">Eggetarian</option>
     </select>
     <select id="filterNRI" onchange="applyFilters()">
-      <option value="">Location Type</option>
+      <option value="">NRI Status</option>
       <option value="Yes">NRI</option>
-      <option value="No">India-based</option>
+      <option value="No">Non-NRI</option>
     </select>
     <select id="filterQualification" onchange="applyFilters()">
-      <option value="">Qualification</option>
+      <option value="">Qualification Category</option>
+      <option value="Doctor">Doctor</option>
+      <option value="CA/CS">CA/CS</option>
+      <option value="Engineer">Engineer</option>
+      <option value="BCA / MCA">BCA / MCA</option>
+      <option value="Lawyer">Lawyer</option>
+      <option value="BBA / MBA">BBA / MBA</option>
+      <option value="Engineer and MBA">Engineer and MBA</option>
+      <option value="Journalist">Journalist</option>
+      <option value="Pharmacist">Pharmacist</option>
+      <option value="Other Qualifications">Other Qualifications</option>
     </select>
-    <button class="btn ghost" onclick="resetFilters()">Reset</button>
+    <select id="filterIncomeRange" onchange="applyFilters()">
+      <option value="">Income Range</option>
+      <option value="Not disclosed">Not disclosed</option>
+      <option value="Below 5 Lakh">Below 5 Lakh</option>
+      <option value="5-10 Lakh">5-10 Lakh</option>
+      <option value="10-20 Lakh">10-20 Lakh</option>
+      <option value="20-35 Lakh">20-35 Lakh</option>
+      <option value="35-50 Lakh">35-50 Lakh</option>
+      <option value="50 Lakh-1 Crore">50 Lakh-1 Crore</option>
+      <option value="Above 1 Crore">Above 1 Crore</option>
+    </select>
+    <input class="wide" type="text" id="filterLocationKeyword" placeholder="Location / place of work" oninput="applyFilters()">
+    <input class="wide" type="text" id="filterOccupationKeyword" placeholder="Occupation / profession" oninput="applyFilters()">
+    <input class="wide" type="text" id="filterIncomeKeyword" placeholder="Income keyword" oninput="applyFilters()">
+    <button class="btn ghost reset-filter" onclick="resetFilters()">Reset</button>
   </div>
   <div class="status" id="statusBox">No profile data is loaded until an approved member logs in.</div>
   <div class="profiles-grid" id="profilesGrid"></div>
@@ -662,6 +693,8 @@ const COL = {
   qualCat: ["Qualification category for publication", "Qualification Category"],
   occupation: ["Occupation ", "Occupation"],
   income: ["Annual salary / income of the candidate (in figures)", "Annual Income"],
+  incomeWords: ["Annual salary / income of the candidate (in words)"],
+  incomeRange: ["Annual income range for publishing (in Indian Rupees per annum)", "Annual Income Range", "Income Range"],
   placeWork: ["Place of work", "Place of Work"],
   diet: ["Diet ", "Diet"],
   nri: ["NRI"],
@@ -859,34 +892,94 @@ function removeCandidateContactFields(profile) {
 }
 
 function buildQualificationFilter() {
-  const select = document.getElementById("filterQualification");
-  const values = [...new Set(allProfiles.map(p => pick(p, "qualCat")).filter(Boolean))].sort();
-  select.innerHTML = '<option value="">Qualification</option>' + values.map(v => `<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`).join("");
+  // Qualification options are fixed to match the Google Form.
 }
 
 function applyFilters() {
-  const name = document.getElementById("searchName").value.toLowerCase();
+  const name = norm(document.getElementById("searchName").value);
   const community = document.getElementById("filterCommunity").value;
+  const ageMin = Number(document.getElementById("filterAgeMin").value || 0);
+  const ageMax = Number(document.getElementById("filterAgeMax").value || 0);
   const marital = document.getElementById("filterMarital").value;
+  const heightMin = Number(document.getElementById("filterHeightMin").value || 0);
+  const heightMax = Number(document.getElementById("filterHeightMax").value || 0);
   const diet = document.getElementById("filterDiet").value;
   const nri = document.getElementById("filterNRI").value;
   const qual = document.getElementById("filterQualification").value;
+  const incomeRange = document.getElementById("filterIncomeRange").value;
+  const locationKeyword = norm(document.getElementById("filterLocationKeyword").value);
+  const occupationKeyword = norm(document.getElementById("filterOccupationKeyword").value);
+  const incomeKeyword = norm(document.getElementById("filterIncomeKeyword").value);
   filteredProfiles = allProfiles.filter(p => {
-    if (name && !pick(p, "name").toLowerCase().includes(name)) return false;
-    if (community && pick(p, "community") !== community) return false;
-    if (marital && pick(p, "marital") !== marital) return false;
-    if (diet && pick(p, "diet") !== diet) return false;
-    if (nri && pick(p, "nri") !== nri) return false;
-    if (qual && pick(p, "qualCat") !== qual) return false;
+    const age = getAgeNumber(pick(p, "dob"));
+    const height = parseHeightInches(pick(p, "height"));
+    const searchText = norm([pick(p, "name"), pick(p, "candidateCode")].join(" "));
+    const incomeText = norm([pick(p, "income"), pick(p, "incomeWords"), pick(p, "incomeRange")].join(" "));
+    if (name && !searchText.includes(name)) return false;
+    if (community && norm(pick(p, "community")) !== norm(community)) return false;
+    if (ageMin && (!age || age < ageMin)) return false;
+    if (ageMax && (!age || age > ageMax)) return false;
+    if (marital && normalizeMarital(pick(p, "marital")) !== marital) return false;
+    if (heightMin && (!height || height < heightMin)) return false;
+    if (heightMax && (!height || height > heightMax)) return false;
+    if (diet && norm(pick(p, "diet")) !== norm(diet)) return false;
+    if (nri && normalizeNri(pick(p, "nri")) !== nri) return false;
+    if (qual && norm(pick(p, "qualCat")) !== norm(qual)) return false;
+    if (incomeRange && norm(pick(p, "incomeRange")) !== norm(incomeRange)) return false;
+    if (locationKeyword && !norm(pick(p, "placeWork")).includes(locationKeyword)) return false;
+    if (occupationKeyword && !norm(pick(p, "occupation")).includes(occupationKeyword)) return false;
+    if (incomeKeyword && !incomeText.includes(incomeKeyword)) return false;
     return true;
   });
   renderProfiles();
 }
 
 function resetFilters() {
-  ["searchName", "filterCommunity", "filterMarital", "filterDiet", "filterNRI", "filterQualification"].forEach(id => document.getElementById(id).value = "");
+  [
+    "searchName", "filterCommunity", "filterAgeMin", "filterAgeMax", "filterMarital", "filterHeightMin",
+    "filterHeightMax", "filterDiet", "filterNRI", "filterQualification", "filterIncomeRange",
+    "filterLocationKeyword", "filterOccupationKeyword", "filterIncomeKeyword"
+  ].forEach(id => document.getElementById(id).value = "");
   filteredProfiles = [...allProfiles];
   renderProfiles();
+}
+
+function norm(value) {
+  return String(value || "").toLowerCase().replace(/\s+/g, " ").trim();
+}
+
+function getAgeNumber(dob) {
+  if (!dob) return 0;
+  const d = new Date(dob);
+  if (Number.isNaN(d.getTime())) return 0;
+  const age = Math.floor((Date.now() - d.getTime()) / (365.25 * 24 * 60 * 60 * 1000));
+  return age > 0 && age < 100 ? age : 0;
+}
+
+function normalizeMarital(value) {
+  const v = norm(value);
+  if (v.includes("never")) return "Never Married";
+  if (v.includes("divorc")) return "Divorced";
+  if (v.includes("widow")) return "Widow / Widower";
+  return value || "";
+}
+
+function normalizeNri(value) {
+  const v = norm(value);
+  if (["yes", "y", "nri"].includes(v) || v.includes("abroad")) return "Yes";
+  return "No";
+}
+
+function parseHeightInches(value) {
+  const text = norm(value).replace(/[”"]/g, "").replace(/[’']/g, "ft");
+  if (!text) return 0;
+  const feetInch = text.match(/(\d+)\s*(?:ft|feet|foot|f|')\s*(\d{1,2})?/);
+  if (feetInch) return Number(feetInch[1]) * 12 + Number(feetInch[2] || 0);
+  const decimalFeet = text.match(/(\d+)\.(\d+)/);
+  if (decimalFeet) return Number(decimalFeet[1]) * 12 + Number(decimalFeet[2]);
+  const cm = text.match(/(\d{3})\s*cm/);
+  if (cm) return Math.round(Number(cm[1]) / 2.54);
+  return 0;
 }
 
 function calcAge(dob) {
@@ -992,6 +1085,7 @@ async function openDetail(index) {
     ["Qualification", pick(p, "qualification") || pick(p, "qualCat")],
     ["Occupation", pick(p, "occupation")],
     ["Place of Work", pick(p, "placeWork")],
+    ["Income Range", pick(p, "incomeRange")],
     ["Annual Income", pick(p, "income")],
     ["Father's Name", pick(p, "fatherName")],
     ["Father's Occupation", pick(p, "fatherOcc")],
