@@ -3,7 +3,83 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aape Mel Milaye | Community Matrimonial Service</title>
+<title>Aape Mel Milaye | Sindhi, Punjabi & Sikh Matrimonial Service</title>
+<meta name="description" content="Aape Mel Milaye is a non-profit community matrimonial service for Sindhi, Punjabi and Sikh families. Submit profiles through Google Form and access approved profiles after member login.">
+<meta name="keywords" content="Aape Mel Milaye, Aapemelmilaye, Sindhi matrimonial, Punjabi matrimonial, Sikh matrimonial, community matrimonial service, non profit matrimonial India">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://aapemelmilaye.com/">
+<meta name="theme-color" content="#7d1717">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Aape Mel Milaye | Community Matrimonial Service">
+<meta property="og:description" content="Non-profit matrimonial registration and approved member access for Sindhi, Punjabi and Sikh families.">
+<meta property="og:url" content="https://aapemelmilaye.com/">
+<meta property="og:image" content="https://aapemelmilaye.com/logo.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Aape Mel Milaye | Community Matrimonial Service">
+<meta name="twitter:description" content="Non-profit matrimonial registration and approved member access for Sindhi, Punjabi and Sikh families.">
+<meta name="twitter:image" content="https://aapemelmilaye.com/logo.jpg">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Aape Mel Milaye",
+  "alternateName": ["Aapemelmilaye", "Aape Mel Milaye Matrimonial Service"],
+  "url": "https://aapemelmilaye.com/",
+  "logo": "https://aapemelmilaye.com/logo.jpg",
+  "description": "A non-profit community matrimonial service for Sindhi, Punjabi and Sikh families.",
+  "contactPoint": [{
+    "@type": "ContactPoint",
+    "telephone": "+91-9407851953",
+    "contactType": "community matrimonial support",
+    "areaServed": "IN",
+    "availableLanguage": ["Hindi", "English"]
+  }],
+  "sameAs": [
+    "https://aapemelmilaye.com/"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Aape Mel Milaye",
+  "url": "https://aapemelmilaye.com/",
+  "description": "Sindhi, Punjabi and Sikh community matrimonial service with profile registration and approved member login."
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Who can register on Aape Mel Milaye?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sindhi, Punjabi and Sikh families can submit matrimonial profiles through the registration form."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can everyone see candidate profiles?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Candidate profiles are visible only after approved member login."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are candidate contact details public?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Candidate contact details are not displayed publicly. Families may contact Mr. T.S. Bedi for guidance."
+      }
+    }
+  ]
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Hind:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -163,6 +239,12 @@ button { cursor: pointer; }
   margin-bottom: 4px;
 }
 .home-contact span { display: block; color: var(--muted); margin-bottom: 12px; }
+.visit-count {
+  margin-top: 12px;
+  color: var(--maroon);
+  font-weight: 700;
+  font-size: 14px;
+}
 .badge-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
 .badge { border: 1px solid rgba(255,255,255,0.36); background: rgba(255,255,255,0.13); color: white; border-radius: 999px; padding: 7px 14px; font-weight: 600; }
 .section { max-width: 1180px; margin: 0 auto; padding: 42px 20px; }
@@ -551,6 +633,7 @@ footer { text-align: center; padding: 30px 20px; color: var(--muted); border-top
             Call Now
           </a>
         </div>
+        <div class="visit-count" id="visitCount" style="display:none"></div>
       </div>
       <button class="btn dark" onclick="openProfileForm()">Submit Profile</button>
       <button class="btn ghost" onclick="openLogin()">Already Approved</button>
@@ -729,12 +812,15 @@ footer { text-align: center; padding: 30px 20px; color: var(--muted); border-top
 <script>
 const CONFIG = {
   // Paste your deployed Google Apps Script Web App URL here.
-  APPS_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbwVtzbAzKXMtkE6FzbUTa203gFrfTGJ5lUX-zN2T5aAqcH1HO4P2S2kRkVd2H_zv6rZ9w/exec",
+  APPS_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbwr77hjDRL57uejBFr4M4-giymjFAAF5RiSLngsKYgTYOGXlMOUuh64B-DQEhXL4Ef5Dw/exec",
   ADMIN_EMAIL: "aapemelmilaye@gmail.com",
   PROFILE_FORM_URL: "https://docs.google.com/forms/d/1R4HGtkplBAM19lCUDQoUtiWDigoGTnF6h_p_O8bPnsM/viewform",
   CONTACT_PERSON: "Mr. T.S. Bedi",
   CONTACT_PHONE_DISPLAY: "+91-9407851953",
   CONTACT_PHONE_E164: "919407851953",
+  SITE_URL: "https://aapemelmilaye.com/",
+  GOOGLE_ANALYTICS_ID: "",
+  MICROSOFT_CLARITY_ID: "",
   // Optional: upload the real logo to the GitHub repo, then set "assets/logo.png" here.
   LOGO_URL: "logo.jpg"
 };
@@ -1256,12 +1342,59 @@ function escapeHtml(value) {
   return String(value ?? "").replace(/[&<>"']/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
 }
 
+function loadOptionalMarketingAnalytics() {
+  if (CONFIG.GOOGLE_ANALYTICS_ID) {
+    const gaScript = document.createElement("script");
+    gaScript.async = true;
+    gaScript.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(CONFIG.GOOGLE_ANALYTICS_ID)}`;
+    document.head.appendChild(gaScript);
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    window.gtag = gtag;
+    gtag("js", new Date());
+    gtag("config", CONFIG.GOOGLE_ANALYTICS_ID, { anonymize_ip: true });
+  }
+  if (CONFIG.MICROSOFT_CLARITY_ID) {
+    (function(c,l,a,r,i,t,y){
+      c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+      t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+      y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", CONFIG.MICROSOFT_CLARITY_ID);
+  }
+}
+
+async function trackPublicVisit() {
+  if (!CONFIG.APPS_SCRIPT_URL || CONFIG.APPS_SCRIPT_URL.includes("PASTE_")) return;
+  try {
+    const data = await api({
+      action: "trackVisit",
+      page: location.pathname || "/",
+      title: document.title,
+      referrer: document.referrer || "",
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || "",
+      language: navigator.language || "",
+      screen: `${window.screen.width || 0}x${window.screen.height || 0}`,
+      viewport: `${window.innerWidth || 0}x${window.innerHeight || 0}`,
+      userAgent: navigator.userAgent || ""
+    });
+    const box = document.getElementById("visitCount");
+    if (box && data.totalVisits) {
+      box.textContent = `Website visits: ${Number(data.totalVisits).toLocaleString("en-IN")}`;
+      box.style.display = "block";
+    }
+  } catch (_) {
+    // Visit tracking should never disturb users.
+  }
+}
+
 document.querySelectorAll(".modal-overlay").forEach(modal => {
   modal.addEventListener("click", event => {
     if (event.target === modal) modal.classList.remove("active");
   });
 });
 
+loadOptionalMarketingAnalytics();
+trackPublicVisit();
 setLogo();
 refreshSessionUi();
 loadProfiles();
