@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /admin-analytics.html
+
+Sitemap: https://aapemelmilaye.com/sitemap.xml

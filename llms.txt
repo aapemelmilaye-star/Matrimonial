@@ -1,0 +1,22 @@
+# Aape Mel Milaye
+
+Official website: https://aapemelmilaye.com/
+
+Aape Mel Milaye is a non-profit community matrimonial service for Sindhi, Punjabi and Sikh families in India.
+
+The website allows families to submit matrimonial profiles through a Google Form. Approved members can log in to view candidate profiles. Candidate contact details are not publicly displayed on the website and are shared only through the admin contact process.
+
+Primary communities served:
+- Sindhi matrimonial profiles
+- Punjabi matrimonial profiles
+- Sikh matrimonial profiles
+
+Important public pages:
+- Homepage and registration: https://aapemelmilaye.com/
+
+Admin/contact:
+- Mr. T.S. Bedi
+- Phone/WhatsApp: +91-9407851953
+
+Privacy note:
+Candidate profile details are visible only to approved members after login. Candidate phone numbers, WhatsApp numbers and addresses are not shown publicly.
