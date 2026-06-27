@@ -362,16 +362,27 @@ button { cursor: pointer; }
 }
 .photo-zoom-btn {
   position: absolute;
-  right: 18px;
-  bottom: 18px;
+  right: 14px;
+  bottom: 14px;
   z-index: 2;
   border: 1px solid rgba(255,255,255,0.85);
   background: rgba(78,14,14,0.92);
   color: white;
-  border-radius: 999px;
-  padding: 8px 13px;
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  font-size: 0;
   font-weight: 800;
   cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.22);
+}
+.photo-zoom-btn::before {
+  content: "+";
+  display: block;
+  font-size: 28px;
+  line-height: 38px;
+  text-align: center;
 }
 .zoom-modal {
   width: min(1180px, 100%);
@@ -595,8 +606,8 @@ footer { text-align: center; padding: 30px 20px; color: var(--muted); border-top
       <option value="Divorced">Divorced</option>
       <option value="Widow / Widower">Widow / Widower</option>
     </select>
-    <input class="compact" type="number" id="filterHeightMin" min="48" max="84" placeholder="Min height" oninput="applyFilters()">
-    <input class="compact" type="number" id="filterHeightMax" min="48" max="84" placeholder="Max height" oninput="applyFilters()">
+    <input class="compact" type="text" id="filterHeightMin" inputmode="decimal" placeholder="Min height, e.g. 5.3" oninput="applyFilters()">
+    <input class="compact" type="text" id="filterHeightMax" inputmode="decimal" placeholder="Max height, e.g. 5.8" oninput="applyFilters()">
     <select id="filterDiet" onchange="applyFilters()">
       <option value="">Diet</option>
       <option value="Vegetarian">Vegetarian</option>
@@ -634,7 +645,7 @@ footer { text-align: center; padding: 30px 20px; color: var(--muted); border-top
       <option value="Above 1 Crore">Above 1 Crore</option>
     </select>
     <input class="wide" type="text" id="filterLocationKeyword" placeholder="Location / place of work" oninput="applyFilters()">
-    <input class="wide" type="text" id="filterOccupationKeyword" placeholder="Occupation / profession" oninput="applyFilters()">
+    <input class="wide" type="text" id="filterOccupationKeyword" placeholder="Qualification / occupation" oninput="applyFilters()">
     <input class="wide" type="text" id="filterIncomeKeyword" placeholder="Income keyword" oninput="applyFilters()">
     <button class="btn ghost reset-filter" onclick="resetFilters()">Reset</button>
   </div>
@@ -740,10 +751,10 @@ const COL = {
   caste: ["Caste"],
   gotra: ["Gotra"],
   marital: ["Marital Status"],
-  qualification: ["Qualification"],
-  qualCat: ["Qualification category for publication", "Qualification Category"],
-  occupation: ["Occupation ", "Occupation"],
-  income: ["Annual salary / income of the candidate (in figures)", "Annual Income"],
+  qualification: ["Qualification", "Educational Qualification", "Education"],
+  qualCat: ["Qualification category", "Qualification Category", "Qualification category for publication", "Qualification Category for Publication"],
+  occupation: ["Occupation ", "Occupation", "Profession", "Occupation / Profession", "Occupation/Profession"],
+  income: ["Annual salary / income of the candidate (in digits)", "Annual salary / income of the candidate (in figures)", "Annual Income"],
   incomeWords: ["Annual salary / income of the candidate (in words)"],
   incomeRange: ["Annual income range for publishing (in Indian Rupees per annum)", "Annual Income Range", "Income Range"],
   placeWork: ["Place of work", "Place of Work"],
@@ -962,11 +973,11 @@ function applyFilters() {
   const ageMin = Number(document.getElementById("filterAgeMin").value || 0);
   const ageMax = Number(document.getElementById("filterAgeMax").value || 0);
   const marital = document.getElementById("filterMarital").value;
-  const heightMin = Number(document.getElementById("filterHeightMin").value || 0);
-  const heightMax = Number(document.getElementById("filterHeightMax").value || 0);
+  const heightMin = parseHeightFilterValue(document.getElementById("filterHeightMin").value);
+  const heightMax = parseHeightFilterValue(document.getElementById("filterHeightMax").value);
   const diet = document.getElementById("filterDiet").value;
   const nri = document.getElementById("filterNRI").value;
-  const qual = document.getElementById("filterQualification").value;
+  const qual = canonicalQualification(document.getElementById("filterQualification").value);
   const incomeRange = document.getElementById("filterIncomeRange").value;
   const locationKeyword = norm(document.getElementById("filterLocationKeyword").value);
   const occupationKeyword = norm(document.getElementById("filterOccupationKeyword").value);
@@ -976,6 +987,8 @@ function applyFilters() {
     const height = parseHeightInches(pick(p, "height"));
     const searchText = norm([pick(p, "name"), pick(p, "candidateCode")].join(" "));
     const incomeText = norm([pick(p, "income"), pick(p, "incomeWords"), pick(p, "incomeRange")].join(" "));
+    const qualificationText = [pick(p, "qualCat"), pick(p, "qualification")].filter(Boolean).join(" ");
+    const occupationText = norm([pick(p, "occupation"), qualificationText].join(" "));
     if (name && !searchText.includes(name)) return false;
     if (community && norm(pick(p, "community")) !== norm(community)) return false;
     if (ageMin && (!age || age < ageMin)) return false;
@@ -985,10 +998,10 @@ function applyFilters() {
     if (heightMax && (!height || height > heightMax)) return false;
     if (diet && norm(pick(p, "diet")) !== norm(diet)) return false;
     if (nri && normalizeNri(pick(p, "nri")) !== nri) return false;
-    if (qual && norm(pick(p, "qualCat")) !== norm(qual)) return false;
+    if (qual && canonicalQualification(qualificationText) !== qual) return false;
     if (incomeRange && norm(pick(p, "incomeRange")) !== norm(incomeRange)) return false;
     if (locationKeyword && !norm(pick(p, "placeWork")).includes(locationKeyword)) return false;
-    if (occupationKeyword && !norm(pick(p, "occupation")).includes(occupationKeyword)) return false;
+    if (occupationKeyword && !occupationText.includes(occupationKeyword)) return false;
     if (incomeKeyword && !incomeText.includes(incomeKeyword)) return false;
     return true;
   });
@@ -1031,6 +1044,22 @@ function normalizeNri(value) {
   return "No";
 }
 
+function canonicalQualification(value) {
+  const v = norm(value).replace(/\./g, "").replace(/\s*\/\s*/g, "/");
+  if (!v) return "";
+  if (v.includes("engineer") && v.includes("mba")) return "Engineer and MBA";
+  if (v.includes("doctor") || v.includes("mbbs") || v.includes("bds") || /\bmd\b/.test(v) || v.includes("physio")) return "Doctor";
+  if (v.includes("ca/cs") || (/\bca\b/.test(v) && /\bcs\b/.test(v))) return "CA/CS";
+  if (v.includes("bca") || v.includes("mca")) return "BCA / MCA";
+  if (v.includes("law") || v.includes("llb") || v.includes("advocate")) return "Lawyer";
+  if (v.includes("bba") || v.includes("mba") || v === "m b a") return "BBA / MBA";
+  if (v.includes("journal")) return "Journalist";
+  if (v.includes("pharma")) return "Pharmacist";
+  if (v.includes("engineer") || v.includes("btech") || v.includes("b tech") || /\bbe\b/.test(v)) return "Engineer";
+  if (v.includes("other")) return "Other Qualifications";
+  return value || "";
+}
+
 function parseHeightInches(value) {
   const text = norm(value).replace(/[”"]/g, "").replace(/[’']/g, "ft");
   if (!text) return 0;
@@ -1041,6 +1070,38 @@ function parseHeightInches(value) {
   const cm = text.match(/(\d{3})\s*cm/);
   if (cm) return Math.round(Number(cm[1]) / 2.54);
   return 0;
+}
+
+function parseHeightInches(value) {
+  let text = norm(value)
+    .replace(/[\u2018\u2019\u2032]/g, "'")
+    .replace(/[\u201c\u201d\u2033]/g, "\"")
+    .replace(/\ufffd/g, "'")
+    .replace(/"/g, "")
+    .replace(/\b(feet|foot|fts|ft|f)\b/g, "'")
+    .replace(/\b(inches|inch|ins|in|8nch)\b/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (!text) return 0;
+  const cm = text.match(/(\d{3})\s*cm/);
+  if (cm) return Math.round(Number(cm[1]) / 2.54);
+  const feetInch = text.match(/^(\d)\s*'\s*(\d{1,2})?/);
+  if (feetInch) return Number(feetInch[1]) * 12 + Number(feetInch[2] || 0);
+  const feetSpace = text.match(/^(\d)\s+(\d{1,2})/);
+  if (feetSpace) return Number(feetSpace[1]) * 12 + Number(feetSpace[2] || 0);
+  const decimalFeet = text.match(/^(\d)\.(\d{1,2})/);
+  if (decimalFeet) return Number(decimalFeet[1]) * 12 + Number(decimalFeet[2]);
+  const plainNumber = text.match(/^(\d{1,2})$/);
+  if (plainNumber) {
+    const n = Number(plainNumber[1]);
+    if (n >= 48) return n;
+    if (n >= 4 && n <= 7) return n * 12;
+  }
+  return 0;
+}
+
+function parseHeightFilterValue(value) {
+  return parseHeightInches(value);
 }
 
 function calcAge(dob) {
@@ -1133,7 +1194,7 @@ async function openDetail(index) {
       if (data.dataUrl) {
         activeDetailPhoto = data.dataUrl;
         photoHtml = `<img src="${escapeHtml(data.dataUrl)}" alt="Candidate photo" onclick="openPhotoZoom()">`;
-        zoomButton = `<button class="photo-zoom-btn" onclick="openPhotoZoom()">Zoom Photo</button>`;
+        zoomButton = `<button class="photo-zoom-btn" onclick="openPhotoZoom()" aria-label="Zoom photo" title="Zoom photo"></button>`;
       }
     } catch (_) {}
   }
